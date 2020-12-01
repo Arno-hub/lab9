@@ -1,0 +1,95 @@
+Question 1
+
+Copier les fichiers max, min, var (.h et .c) dans le répertoire du lab9 
+
+Question 2 compiler les fichiers max, min et var (.c) en utilisant l'option -fPIC 
+--> Pour faire cela --> On execute la commande --> gcc -Wall -fPIC -c max.c,gcc -Wall -fPIC -c min.c ...
+
+Question 3
+
+On créé la bibliothèque partagée en  faisant appel à l'option -shared 
+--> gcc -shared max.o min.o var.o -o liblab9.so
+
+Question 4 
+
+On déplace ensuite la bibliothèque créée dans le répertoire se trouvant dans /opt/lib 
+
+Question 5
+
+Après avoir copié le main.c du lab8 dans le lab9, on procède à la compilation à nouveau en spécifiant
+cette fois-ci le chemin d'accès à la bibliothèque liblab.9 et non à liboutils.a telle que : 
+gcc main.c -L/opt/lib -I/opt/include -llab9 -lm -o main.exe
+
+Question 6
+
+En executant le programme, on a un message d'erreur qui s'affiche, nous indiquant :  
+./main.exe: error while loading shared libraries: liblab9.so: cannot open shared object file: No such file or directory
+Il apparait donc impossible de charger la bibliothèque dynamique que nous venons de créer.
+
+Question 7
+
+Lorsque l'on réalise un echo $LD_LIBRARY_PATH, pour connaître le contenu de cette variable d'environnement, on remarque que rien n'est contenu dans cette variable d'environnement. 
+
+Question 8
+
+On ajoute alors le chemin de notre bibliothèque partagé pour indiquer à l'éditeur de lien dynamique le répertoire dans lequel il faut chercher les bibliothèques partagées lors de l'execution.
+On applique la commande suivante : export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/lib/
+
+Question 9
+En compilant à nouveau via la commande suivante : gcc main.c -L/opt/lib -I/opt/include -llab9 -lm -o main.exe
+Et en executant à nouveau, l'executable fonctionne correctement cette fois-ci et on obient le résultat suivant : 
+./main.exe 
+La valeur maximale présente dans le tableau est : 19 
+ La valeur minimale présente dans le tableau est : 1 
+ La valeur de la variance de ce tableau est : 35.000000 
+
+Question 10 
+
+Pour rajouter le chemin de notre bibliothèque de manière permanente dans la variable d'environnement LD_LIBRARY_PATH on ouvre le fichier bashrc via la commande vim ~/.bashrc
+A la fin du script, on ajoute la commande --> export LD_LIBRARY_PATH=$LD_LIBRARY_PATH: /opt/lib/
+On sauvegarde puis on ferme. 
+Désormais, lorqu'on réouvre un terminal et qu'on se rend dans le répertoire du lab9, on peut éxécuter le programme main.c sans problème d'accès la librairie dynamique.
+
+Quesion 11
+Pour localiser la bibliothèque math "libm.so" on utilise la commande --> locate libm.so 
+On obtient plusieurs path mais on en relève trois en particuliers faisant référence directement à la bibliothèque math "libm.so", ce sont les suivants : 
+/usr/lib/x86_64-linux-gnu/libm.so 
+/snap/gnome-3-34-1804/36/usr/lib/x86_64-linux-gnu/libm.so
+/snap/gnome-3-34-1804/60/usr/lib/x86_64-linux-gnu/libm.so
+
+Question 12 
+En ayant localisé la bibliothèque libm.so, on a pu identiefier le soname de la bibliothèque math qui est --> libm.so.6
+Par ailleurs, le nom réel de la librairie math est --> libm
+
+Question 13
+Après avoir copié notre bibliothèque liblab9.so dans la usr/lib.
+Afin de retirer les droits d'écriture pour l'utilisateur sur la librairie liblab9.so, on applique la commande --> sudo chmod u-w liblab9.so
+On peut vérifier que l'opération ait été bien réalisée en appliquant la commande --> ls -l liblab9.so --> ce qui affiche --> -r-xr-xr-x 1 root root 7552 Nov 12 23:31 liblab9.so
+Le droit d'écriture n'est plus accordé.  
+
+Question 14
+Pour mettre à jour le cache du ld.so, on applique la commande --> ldconfig.
+
+Question 15
+On vérifie que l'action a bien été effectué via la commande --> 
+/usr/lib$ ldconfig -p | grep liblab9
+On obtient le résultat suivant nous indiquand que le cache du ld.so a bien été mis à jour et inclut maintenant la bilbliothèque liblab9.so
+liblab9.so (libc6,x86-64) => /usr/lib/liblab9.so
+ 
+Question 16
+En applicant dans usr/lib  la commande --> ldd liblab9.so --> on obtient le résultat suivant :
+-->	statically linked
+L'existence de la library dans usr/lib est donc vérifiée. 
+
+Question 17
+On désactive la variable d'environnement LD_LIBRARY_PATH en ouvrant le fichier bashrc --> vim ~\.bashrc--> on désactive LD_LIBRARY_PATH 
+
+Question 18
+On compile désormais main.c en ne spécifiant plus -L/opt/lib ni -I/opt/include  car on a intégré notre bibliothèque dans un emplacement standard de sortie dans usr/lib.
+On compile donc de la façon suivante --> gcc main.c -llab9 -lm -o main.exe
+
+Question 19
+En executant l'executable main.exe de puis n'importe quel terminal, la fonction désirée s'execute correctement. 
+
+
+
