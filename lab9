@@ -2,12 +2,15 @@ Question 1
 
 Copier les fichiers max, min, var (.h et .c) dans le répertoire du lab9 
 
-Question 2 compiler les fichiers max, min et var (.c) en utilisant l'option -fPIC 
+Question 2 
+
+compiler les fichiers max, min et var (.c) en utilisant l'option -fPIC 
+
 --> Pour faire cela --> On execute la commande --> gcc -Wall -fPIC -c max.c,gcc -Wall -fPIC -c min.c ...
 
 Question 3
 
-On créé la bibliothèque partagée en  faisant appel à l'option -shared 
+On créé la bibliothèque partagée en faisant appel à l'option -shared 
 --> gcc -shared max.o min.o var.o -o liblab9.so
 
 Question 4 
@@ -40,8 +43,8 @@ En compilant à nouveau via la commande suivante : gcc main.c -L/opt/lib -I/opt/
 Et en executant à nouveau, l'executable fonctionne correctement cette fois-ci et on obient le résultat suivant : 
 ./main.exe 
 La valeur maximale présente dans le tableau est : 19 
- La valeur minimale présente dans le tableau est : 1 
- La valeur de la variance de ce tableau est : 35.000000 
+La valeur minimale présente dans le tableau est : 1 
+La valeur de la variance de ce tableau est : 35.000000 
 
 Question 10 
 
@@ -89,7 +92,7 @@ On compile désormais main.c en ne spécifiant plus -L/opt/lib ni -I/opt/include
 On compile donc de la façon suivante --> gcc main.c -llab9 -lm -o main.exe
 
 Question 19
-En executant l'executable main.exe de puis n'importe quel terminal, la fonction désirée s'execute correctement. 
+En executant l'executable main.exe depuis n'importe quel terminal, la fonction désirée s'execute correctement. 
 
 
 
